@@ -1,0 +1,23 @@
+h1{
+    text-align: center;
+    color: #000000;
+    font-family: 'Montserrat';
+}
+
+h2{
+    text-align: center;
+    color: gray;
+    font-family: 'Arial';
+}
+
+footer{
+    text-align: center;
+    color: blue;
+    font-family: 'Arial';
+}
+
+p{
+    text-align: center;
+    color:gray;
+    font-family: 'Arial';
+}
