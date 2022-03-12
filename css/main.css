@@ -1,12 +1,14 @@
-h1{
-    text-align: center;
-    color: #000000;
-    font-family: 'Montserrat';
+body{
+    background-color: grey;
+}
+
+image{
+    align-content: center;
 }
 
 h2{
     text-align: center;
-    color: gray;
+    color: black;
     font-family: 'Rubik';
 }
 
@@ -18,6 +20,6 @@ footer{
 
 p{
     text-align: center;
-    color:gray;
+    color:black;
     font-family: 'Arial';
 }
