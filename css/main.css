@@ -2,8 +2,9 @@ body{
     background-color: grey;
 }
 
-image{
-    align-content: center;
+img{
+    display:block;
+    margin:auto;
 }
 
 h2{
