@@ -1,11 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.card');
+    console.log("DBLKL | Marca Personal Activa");
 
-    cards.forEach(card => {
-        card.addEventListener('click', () => {
-            const projectType = card.getAttribute('data-project');
-            const path = projectType === 'home' ? '../' : `./${projectType}/`;
-            window.location.href = path;
-        });
+    const items = document.querySelectorAll('.nav-item');
+    items.forEach((item, index) => {
+        item.style.animationDelay = `${(index + 1) * 0.2}s`;
     });
 });
