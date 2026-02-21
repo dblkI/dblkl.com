@@ -1,7 +1,8 @@
 :root {
     --bg: #0a0a0a;
     --text: #e0e0e0;
-    --accent: #505050; /* Gris industrial */
+    --accent: #505050;
+    /* Gris industrial */
     --muted: #666;
 }
 
@@ -16,21 +17,36 @@ body {
 /* Grano de película sobrepuesto */
 .noise-overlay {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: url('https://grainy-gradients.vercel.app/noise.svg');
-    opacity: 0.05; pointer-events: none; z-index: 100;
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 100;
 }
 
 /* --- ESTILOS COMPARTIDOS --- */
-.brand { 
-    font-size: clamp(2.5rem, 12vw, 5rem); 
-    font-weight: 800; 
-    letter-spacing: -2px; 
+.brand {
+    font-size: clamp(2.5rem, 12vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -2px;
     line-height: 0.9;
 }
-.accent { -webkit-text-stroke: 1px var(--text); color: transparent; }
-.tagline { color: var(--accent); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+
+.accent {
+    -webkit-text-stroke: 1px var(--text);
+    color: transparent;
+}
+
+.tagline {
+    color: var(--accent);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
 
 /* --- PÁGINA PRINCIPAL (.hero) --- */
 .hero {
@@ -39,18 +55,42 @@ body {
     flex-direction: column;
     justify-content: space-between;
     padding: 8vh 8vw;
-    overflow: hidden; /* Evita scroll en la home */
+    overflow: hidden;
+    /* Evita scroll en la home */
 }
 
-.main-nav { display: flex; flex-direction: column; gap: 1rem; margin: 2rem 0; }
+.main-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
 .nav-item {
-    text-decoration: none; color: var(--text);
-    display: flex; align-items: baseline; gap: 0.8rem;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
     transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.nav-item:hover { transform: translateX(15px); color: var(--accent); }
-.nav-item .number { font-size: 0.7rem; color: var(--muted); font-family: monospace; }
-.nav-item .label { font-size: clamp(1.2rem, 5vw, 1.8rem); font-weight: 500; text-transform: uppercase; }
+
+.nav-item:hover {
+    transform: translateX(15px);
+    color: var(--accent);
+}
+
+.nav-item .number {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: monospace;
+}
+
+.nav-item .label {
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+    font-weight: 500;
+    text-transform: uppercase;
+}
 
 /* Actualización en la sección de footer */
 footer {
@@ -59,7 +99,8 @@ footer {
     align-items: center;
     border-top: 1px solid #222;
     padding-top: 2rem;
-    flex-wrap: wrap; /* Permite que se acomode en móviles */
+    flex-wrap: wrap;
+    /* Permite que se acomode en móviles */
     gap: 1.5rem;
 }
 
@@ -83,7 +124,8 @@ footer {
 }
 
 .email-link {
-    color: var(--text) !important; /* El correo destaca más */
+    color: var(--text) !important;
+    /* El correo destaca más */
     font-weight: 600;
 }
 
@@ -93,6 +135,7 @@ footer {
         align-items: flex-start;
     }
 }
+
 /* --- SUBPÁGINAS (.subpage-layout) --- */
 .subpage-layout {
     min-height: 100vh;
@@ -101,18 +144,273 @@ footer {
     flex-direction: column;
 }
 
-.back-nav { margin-bottom: 3rem; }
-.back-link { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 1px; }
+.back-nav {
+    margin-bottom: 3rem;
+}
 
-.content-body { max-width: 700px; margin-top: 2rem; }
-.description { font-size: clamp(1.1rem, 4vw, 1.3rem); color: var(--muted); }
+.back-link {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.content-body {
+    max-width: 700px;
+    margin-top: 2rem;
+}
+
+.description {
+    font-size: clamp(1.1rem, 4vw, 1.3rem);
+    color: var(--muted);
+}
+
+/* --- VISTA DE PROYECTOS (Mosaico) --- */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.project-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text);
+    transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.project-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+.project-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--text);
+}
+
+.project-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* --- PDF TO EPUB TOOL --- */
+.upload-area {
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 4rem 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.upload-area.dragging {
+    border-color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    color: var(--muted);
+    margin-bottom: 1rem;
+}
+
+.upload-area h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.upload-area p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.upload-btn {
+    background: var(--text);
+    color: var(--bg);
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+.upload-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.processing-area,
+.completed-area {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 3rem 2rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.processing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.file-name {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.status-text {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--text);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.processing-pulse {
+    animation: indeterminatePulse 2s infinite ease-in-out;
+}
+
+@keyframes indeterminatePulse {
+    0% {
+        transform: translateX(-100%);
+        width: 50%;
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(200%);
+        width: 50%;
+        opacity: 0.5;
+    }
+}
+
+.completed-area {
+    text-align: center;
+}
+
+.success-icon {
+    color: #4CAF50;
+    margin-bottom: 1.5rem;
+}
+
+.completed-area h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
+}
+
+.success-text {
+    color: var(--muted);
+    font-size: 1.1rem;
+}
+
+.download-btn {
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.secondary-btn:hover {
+    border-color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+}
 
 /* Animaciones */
-.fade-in { animation: fadeIn 1s ease forwards; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in {
+    animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 /* Fix para iPhone/Móvil */
 @media (max-width: 768px) {
-    .hero, .subpage-layout { padding: 6vh 6vw; }
-    footer { flex-direction: column; gap: 1rem; align-items: flex-start; }
+
+    .hero,
+    .subpage-layout {
+        padding: 6vh 6vw;
+    }
+
+    footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
 }

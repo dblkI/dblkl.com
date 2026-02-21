@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Daniel Blanquel | Home',
-  description: 'Portafolio de ingeniería, fotografía y prototipado.',
+  description: 'Portafolio de proyectos, fotografía y prototipado.',
 };
 
 export default function RootLayout({
