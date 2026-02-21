@@ -1,0 +1,6 @@
+firebase_functions~=0.1.0
+firebase-admin>=6.0.0
+PyMuPDF>=1.23.0
+EbookLib>=0.18
+lxml>=4.9.0
+google-cloud-vision>=3.4.0
