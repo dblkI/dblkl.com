@@ -100,8 +100,9 @@ def analyze_pdf(doc):
         all_images.extend(page_images)
         total_words += page_word_count
 
-        # Detect scanned pages: has images but very few words
-        is_scanned = page_has_images and page_word_count < 10
+        # Detect scanned pages: has images (either in text blocks or via get_images) but very few words
+        has_any_images = page_has_images or len(page_images) > 0
+        is_scanned = has_any_images and page_word_count < 10
         if is_scanned:
             scanned_pages.append(page_num)
 
@@ -158,7 +159,6 @@ def ocr_scanned_pages(doc, scanned_indices):
     for page_num in scanned_indices:
         try:
             page = doc.load_page(page_num)
-            # Render page as high-quality image
             pix = page.get_pixmap(dpi=200)
             img_bytes = pix.tobytes("png")
 
@@ -183,7 +183,7 @@ def ocr_scanned_pages(doc, scanned_indices):
 # STAGE 3: Intelligent Chapter Structuring
 # ─────────────────────────────────────────────────────────
 
-def structure_chapters(analysis, ocr_results, params):
+def structure_chapters(analysis, ocr_results, params, doc=None):
     """
     Groups pages into chapters using three-tier priority:
     1. Embedded TOC (if available)
@@ -231,7 +231,7 @@ def structure_chapters(analysis, ocr_results, params):
                     if front_pages:
                         chapters.insert(0, {"title": "Portada", "pages": front_pages})
                 
-                return _build_chapter_content(chapters, pages, ocr_results, analysis)
+                return _build_chapter_content(chapters, pages, ocr_results, analysis, doc)
 
     # ── Strategy 2: Heading detection ──
     heading_min_size = body_size * heading_threshold
@@ -290,7 +290,7 @@ def structure_chapters(analysis, ocr_results, params):
                 if front_pages:
                     chapters.insert(0, {"title": "Portada", "pages": front_pages})
             
-            return _build_chapter_content(chapters, pages, ocr_results, analysis)
+            return _build_chapter_content(chapters, pages, ocr_results, analysis, doc)
 
     # ── Strategy 3: Page-chunk fallback ──
     print(f"  No headings detected, using page-chunk fallback (size={chunk_size})")
@@ -303,11 +303,12 @@ def structure_chapters(analysis, ocr_results, params):
             "pages": chapter_pages,
         })
 
-    return _build_chapter_content(chapters, pages, ocr_results, analysis)
+    return _build_chapter_content(chapters, pages, ocr_results, analysis, doc)
 
 
-def _build_chapter_content(chapters, pages, ocr_results, analysis):
+def _build_chapter_content(chapters, pages, ocr_results, analysis, doc=None):
     """Builds HTML content for each chapter from its pages."""
+
     for chapter in chapters:
         html_parts = []
         chapter_word_count = 0
@@ -330,7 +331,7 @@ def _build_chapter_content(chapters, pages, ocr_results, analysis):
                             html_parts.append(f"<p>{_escape_html(p)}</p>")
                             chapter_word_count += len(p.split())
             else:
-                # Build HTML from structured text blocks
+                # Build HTML from structured text blocks (native text PDF)
                 body_size = analysis["body_font_size"]
                 for block in page_data["blocks"]:
                     text = block["text"]
@@ -349,6 +350,10 @@ def _build_chapter_content(chapters, pages, ocr_results, analysis):
 
             # Collect images for this page
             chapter_images.extend(page_data.get("images", []))
+
+        # Ensure chapter always has some content (prevents lxml ParserError)
+        if not html_parts:
+            html_parts.append("<p><em>(Esta sección contiene únicamente imágenes.)</em></p>")
 
         chapter["content_html"] = "\n".join(html_parts)
         chapter["word_count"] = chapter_word_count
@@ -445,30 +450,21 @@ def build_epub(chapters, metadata, output_path):
             book.add_item(epub_img)
             image_refs.append(img_filename)
 
-        # Build chapter HTML
+        # Build chapter HTML — use simple XHTML body (ebooklib wraps it in full doc)
         images_html = "\n".join(
             f'<img src="{ref}" alt="Image"/>' for ref in image_refs
         )
 
-        chapter_html = f"""<?xml version="1.0" encoding="utf-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <title>{_escape_html(chapter['title'])}</title>
-  <link rel="stylesheet" href="style/main.css" type="text/css"/>
-</head>
-<body>
-  <div class="chapter-title"><h1>{_escape_html(chapter['title'])}</h1></div>
-  {chapter['content_html']}
-  {images_html}
-</body>
-</html>"""
+        body_content = f"""<h1 class="chapter-title">{_escape_html(chapter['title'])}</h1>
+{chapter['content_html']}
+{images_html}"""
 
         c = epub.EpubHtml(
             title=chapter["title"],
             file_name=f"chapter_{i + 1}.xhtml",
             lang=metadata.get("language", "es"),
         )
-        c.content = chapter_html
+        c.set_content(body_content.encode("utf-8"))
         c.add_item(style_item)
         book.add_item(c)
         epub_chapters.append(c)
@@ -660,7 +656,7 @@ def process_epub_conversion(event: storage_fn.CloudEvent[storage_fn.StorageObjec
             # ── STAGE 3: Intelligent Structuring ──
             print(f"  Stage 3: Structuring (threshold={params['heading_threshold']}, "
                   f"chunk={params['chunk_size']})")
-            chapters = structure_chapters(analysis, ocr_results, params)
+            chapters = structure_chapters(analysis, ocr_results, params, doc=doc)
             print(f"  Result: {len(chapters)} chapters")
 
             progress_base = 35 + (iteration - 1) * 15
